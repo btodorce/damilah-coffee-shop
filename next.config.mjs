@@ -1,6 +1,6 @@
-/** @type {import('next').NextConfig} */
+// next.config.js
 const nextConfig = {
-  reactStrictMode: true,
+  transpilePackages: ['antd'],
 };
 
 export default nextConfig;

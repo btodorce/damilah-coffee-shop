@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
-import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache, NormalizedCacheObject, split } from '@apollo/client';
+import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import type { AppProps } from "next/app";
+import dynamic from 'next/dynamic';
 
-const GRAPHQL_HTTP_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_ENDPOINT ?? "http://localhost:4000"
+const GRAPHQL_HTTP_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_ENDPOINT ?? "http://localhost:4000/"
 
 
 let apolloClient: ApolloClient<NormalizedCacheObject | null>
@@ -32,10 +33,14 @@ apolloClient = new ApolloClient({
   link: ApolloLink.from([httpLink]),
   cache,
 })
-
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return  (
     <ApolloProvider client={apolloClient}> 
       <Component {...pageProps} />
     </ApolloProvider>)
 }
+
+
+export default dynamic(() => Promise.resolve(App), {
+  ssr: false,
+});
