@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { EditOutlined, PlusOutlined, SettingOutlined, ShopOutlined } from '@ant-design/icons';
 import { Card } from 'antd';
 import { Coffee } from '../../types';
+import Image from "next/image"
 
 
 const { Meta } = Card;
@@ -18,7 +19,7 @@ export const CoffeeProduct: FC<CoffeeProductProps> = ({id, description, image, i
         <Card
             style={{ width: 200 }}
             cover={
-                <img src={image} />
+                <img src={image} alt="coffee"/>
             }
             actions={[
                 <PlusOutlined key="add" onClick={() => onAddToCart({id, description, image, ingredients, title})} />,

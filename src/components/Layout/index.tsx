@@ -1,23 +1,34 @@
-import { FC } from 'react';
-import { Card, Layout as AntLayout } from 'antd'
+import React, { createContext, FC, useContext } from 'react';
+import { Card, Layout as AntLayout, notification } from 'antd';
+import { NotificationInstance } from 'antd/es/notification/interface';
 
-const { Content } = AntLayout
+const { Content } = AntLayout;
 
-interface LayoutProps {
-    children?: React.ReactNode; 
+interface P {
+    children?: React.ReactNode;
 }
 
-export const Layout: FC<LayoutProps> = ({ children, ...rest }) => {
+const NotificationContext = createContext<NotificationInstance | null>(null);
+
+export const useNotification = () => useContext(NotificationContext);
+
+
+export const Layout: FC<P> = ({ children, ...rest }) => {
+    const [api, contextHolder] = notification.useNotification();
+    
     return (
-        <AntLayout {...rest}>
-            <AntLayout style={{ background: '#F7F7F9' }}>
-                <Content style={{ padding: '0 10em' }}>
-                    <Card>
-                        {children}
-                    </Card>
-                </Content>
+        <NotificationContext.Provider value={api}>
+            <AntLayout {...rest}>
+                <AntLayout style={{ background: '#F7F7F9' }}>
+                    <Content style={{ padding: '0 10em' }}>
+                        {contextHolder}
+                        <Card>
+                            {children}
+                        </Card>
+                    </Content>
+                </AntLayout>
             </AntLayout>
-        </AntLayout>
+        </NotificationContext.Provider>
     );
 }
 
